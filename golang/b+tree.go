@@ -68,7 +68,8 @@ type BPTree struct {
 type bPTree interface {
 	getLeaves() *LeafNodeIterator
 	Get(key KeyType) PrimaryKeyType
-	Set(key KeyType, prim PrimaryKeyType)
+	Add(key KeyType, prim PrimaryKeyType)
+	Delete(key KeyType)
 	Scan(lowKey KeyType, highKey KeyType, lowKeyInclusive bool, highKeyInclusive bool) *LeafNodeIterator
 }
 
@@ -102,7 +103,11 @@ func (b *BPTree) Get(key KeyType) PrimaryKeyType {
 	panic("implement me")
 }
 
-func (b *BPTree) Set(key KeyType, prim PrimaryKeyType) {
+func (b *BPTree) Add(key KeyType, prim PrimaryKeyType) {
+	panic("implement me")
+}
+
+func (b *BPTree) Delete(key KeyType){
 	panic("implement me")
 }
 
