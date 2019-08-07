@@ -48,12 +48,38 @@ func (m *LeafNode) isFull() bool {
 	return m.cap == len(m.nodes)
 }
 
-func (m *LeafNode) insert() {
+func (m *LeafNode) insert(key KeyType, prim PrimaryKeyType) {
+	inserted := false
+	for i, v := range m.nodes {
+		if key < v.key {
+			insertInto(&m.nodes, KV{key, prim}, i)
+			inserted = true
+			break
+		}
+	}
+	if !inserted {
+		insertInto(&m.nodes, KV{key, prim}, m.cap)
+	}
+}
 
+func insertInto(a *[]KV, val KV, index int) {
+	tmp := append([]KV{val}, (*a)[index:]...)
+	tmp = append((*a)[:index], tmp...)
+	a = &tmp
 }
 
 func (m *LeafNode) split() (newRightLeafNode *LeafNode) {
-
+	newRightLeafNode = &LeafNode{
+		cap:   m.cap,
+		nodes: nil,
+		par:   m.par,
+		left:  m,
+		right: m.right,
+	}
+	m.right = newRightLeafNode
+	newRightLeafNode.nodes = m.nodes[(m.cap + 1) / 2:]
+	m.nodes = m.nodes[:(m.cap + 1) / 2]
+	return newRightLeafNode
 }
 
 type LeafNodeIterator interface {
